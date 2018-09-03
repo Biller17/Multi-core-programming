@@ -19,6 +19,17 @@ void initialData(float *ip, const int size)
 }
 
 
+void printArray(int ** array, int size){
+  for(int i = 0; i < size; i++){
+    for(int j = 0; j < size; j++){
+      printf("%d", array[i][j]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
+
 void sumMatrixOnHost(float *A, float *B, float *C, const int nx,
                      const int ny)
 {
