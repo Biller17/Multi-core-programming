@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     int dimx = 256;
     dim3 block(dimx, 1);
     dim3 grid((nx + block.x - 1) / block.x, 1);
-
+    printf("matrixc\n" );
     printArray(d_MatC, nx);
     start_cpu =  chrono::high_resolution_clock::now();
     multiplyMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
