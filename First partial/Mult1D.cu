@@ -93,17 +93,18 @@ __global__ void sumMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
     //idx full size
     //ix X ix matrix
-    printf("size? %d\n", nx );
-
-    // if (ix < nx ){
+    //nx  = width
+    //ny height
+    int fullSize = nx * ny;
+    printf("%d\n",fullSize );
+    // if (ix < nx){
     //     int * mult = new int[ny];
     //     for(int j = 0; j < ny; j++){
     //       for(int k = 0; k < nx; k++){
     //         int idx = j * nx + k;
-    //         mult[j] += MatA[ix][k] * MatB[k][j];
+    //         MatC[j] += MatA[ix] * MatB[k];
     //       }
     //     }
-    //     MatC[ix]
     // }
       if(ix < nx)
         for (int iy = 0; iy < ny; iy++)
