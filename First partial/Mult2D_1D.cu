@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaMemset(d_MatC, 0, nBytes), "Error setting d_MatC to zeros");
 
     // invoke kernel at host side
-    int dimx = 128;
+    int dimx = 256;
     //cada bloque va a tener 128 hilos
     dim3 block(dimx, 1);
     dim3 grid((nx + block.x - 1) / block.x, ny);
