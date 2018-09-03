@@ -96,7 +96,7 @@ __global__ void sumMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny
     //nx  = width
     //ny height
     int fullSize = nx * ny;
-    // if (ix < fullSize){
+    // if (ix < nx){
     //     int * mult = new int[ny];
     //     for(int j = 0; j < ny; j++){
     //       for(int k = 0; k < nx; k++){
@@ -105,6 +105,7 @@ __global__ void sumMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny
     //       }
     //     }
     // }
+    printf("%d\n", nx);
       if(ix < nx)
         for (int iy = 0; iy < ny; iy++)
         {
