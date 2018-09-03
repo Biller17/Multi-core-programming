@@ -22,7 +22,7 @@ void printArray(float * arr, int size)
 {
   printf("size: %d\n", size);
   for(int x = 0; x < size; x++){
-    printf("%ld", arr[x]);
+    printf(" %ld ", arr[x]);
     printf("\n");
   }
 }
