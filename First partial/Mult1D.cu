@@ -119,8 +119,11 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
-
-
+    printArray(h_A, nx);
+    printf("\n");
+    printArray(h_B, nx);
+    printf("\n");
+    // printArray(h_A, nx);
 
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
@@ -147,6 +150,7 @@ int main(int argc, char **argv)
     int dimx = 256;
     dim3 block(dimx, 1);
     dim3 grid((nx + block.x - 1) / block.x, 1);
+
     start_cpu =  chrono::high_resolution_clock::now();
     multiplyMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
