@@ -12,7 +12,7 @@ void initialData(float *ip, const int size)
 
     for(i = 0; i < size; i++)
     {
-        ip[i] = (float)(rand()) / 10.0f;
+        ip[i] = i+1;
     }
 
     return;
@@ -22,7 +22,10 @@ void printArray(float * arr, int size)
 {
   int totalSize = size * size;
   for(int x = 0; x < totalSize; x++){
-    printf("%f\n", arr[x]);
+    printf("%f ", arr[x]);
+    if(x == size){
+      printf("\n");
+    }
   }
 }
 
