@@ -18,17 +18,15 @@ void initialData(float *ip, const int size)
     return;
 }
 
-
-void printArray(int ** array, int size){
-  for(int i = 0; i < size; i++){
-    for(int j = 0; j < size; j++){
-      printf("%d", array[i][j]);
+void printArray(float * arr, int size)
+{
+  for(int x = 0; x < size; x++){
+    if(x%N==0){
+      printf("\n");
     }
-    printf("\n");
+    printf("%ld ", C[x]);
   }
-  printf("\n");
 }
-
 
 void sumMatrixOnHost(float *A, float *B, float *C, const int nx,
                      const int ny)
@@ -90,6 +88,8 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
 __global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, int ny)
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
+    //idx full size
+    //ix X ix matrix
 
     // if (ix < nx ){
     //     int * mult = new int[ny];
@@ -143,6 +143,7 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
+    printArray(h_A, nx);
 
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
