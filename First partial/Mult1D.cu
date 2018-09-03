@@ -20,7 +20,8 @@ void initialData(float *ip, const int size)
 
 void printArray(float * arr, int size)
 {
-  ar *= size;
+  ar = size * size;
+  printf("aiura: %d", arr[0]);
   for(int x = 0; x < ar; x++){
     printf("%ld ", arr[x]);
     if(x == size){
