@@ -117,8 +117,8 @@ int main(int argc, char **argv)
     // set up data size of matrix
     // int nx = 1 << 12;
     // int ny = 1 << 12;
-    int nx = 1000;
-    int ny = 1000;
+    int nx = 2000;
+    int ny = 2000;
     int nxy = nx * ny;
     int nBytes = nxy * sizeof(int);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
