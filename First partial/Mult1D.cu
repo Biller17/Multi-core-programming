@@ -21,9 +21,11 @@ void initialData(int *ip, const int size)
 void printArray(int * arr, int size)
 {
   int totalSize = size * size;
+  int row = 1:
   for(int x = 0; x < totalSize; x++){
     printf("%d ", arr[x]);
-    if(x % size == 0){
+    if(size * row == x){
+      row++;
       printf("\n");
     }
   }
