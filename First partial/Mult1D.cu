@@ -81,16 +81,17 @@ __global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, 
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
 
     if (ix < nx )
-        // for(int j = 0; j < size; j++){
-        //   for(int k = 0; k < size; k++){
-        //     MatC[j] += MatA[threadID][k] * MatB[k][j];
-        //   }
-        // }
-        for (int iy = 0; iy < ny; iy++)
-        {
-            int idx = iy * nx + ix;
-            MatC[idx] = MatA[idx] + MatB[idx];
+        for(int j = 0; j < ny; j++){
+          for(int k = 0; k < nx; k++){
+            int idx = j * nx + k;
+            MatC[j] += MatA[idx][k] * MatB[k][j];
+          }
         }
+        // for (int iy = 0; iy < ny; iy++)
+        // {
+        //     int idx = iy * nx + ix;
+        //     MatC[idx] = MatA[idx] + MatB[idx];
+        // }
 }
 
 
@@ -106,11 +107,12 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaSetDevice(dev), "Error setting device");
 
     // set up data size of matrix
-    int nx = 1 << 12;
-    int ny = 1 << 12;
+    // int nx = 1 << 12;
+    // int ny = 1 << 12;
 
+    int nx = 4;
+    int ny = 4;
     int nxy = nx * ny;
-    printf("NXY+************%d", nxy);
     int nBytes = nxy * sizeof(float);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
 
