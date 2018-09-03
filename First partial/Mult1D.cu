@@ -125,10 +125,10 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
-    printArray(h_A, nx);
-    printf("\n");
-    printArray(h_B, nx);
-    printf("\n");
+    // printArray(h_A, nx);
+    // printf("\n");
+    // printArray(h_B, nx);
+    // printf("\n");
     // printArray(h_A, nx);
 
     memset(hostRef, 0, nBytes);
