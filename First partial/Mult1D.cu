@@ -31,36 +31,16 @@ void printArray(int * arr, int size)
   }
 }
 
-void sumMatrixOnHost(int *A, int *B, int *C, const int nx,
+void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
                      const int ny)
 {
-    int *ia = A;
-    int *ib = B;
-    int *ic = C;
-
-    for (int iy = 0; iy < ny; iy++)
-    {
-        for (int ix = 0; ix < nx; ix++)
-        {
-            ic[ix] = ia[ix] + ib[ix];
+      for(int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+          for(int k = 0; k < size; k++){
+            C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
+          }
         }
-
-        ia += nx;
-        ib += nx;
-        ic += nx;
-    }
-
-
-    //   int * multiplication  = new int[size];
-    //   for(int i = 0; i < size; i++){
-    //     multiplication[i] = new int[size];
-    //     for(int j = 0; j < size; j++){
-    //       for(int k = 0; k < size; k++){
-    //         multiplication[i][j] += matrixA[i][k] * matrixB[k][j];
-    //       }
-    //     }
-    //   }
-    //   return multiplication;
+      }
 
     return;
 }
@@ -99,7 +79,7 @@ __global__ void sumMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny
     if (ix < nx){
         for(int j = 0; j < ny; j++){
           for(int k = 0; k < nx; k++){
-            MatC[ix * nx + j] += MatA[ix * nx + j] * MatB[k * nx + j];
+            MatC[j * nx + ix] += MatA[j * nx + k] * MatB[k * nx + ix];
           }
         }
     }
@@ -153,11 +133,11 @@ int main(int argc, char **argv)
 
     // add matrix at host side for result SAFE_CALLs
     auto start_cpu =  chrono::high_resolution_clock::now();
-    sumMatrixOnHost(h_A, h_B, hostRef, nx, ny);
+    multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnHost elapsed %f ms\n", duration_ms.count());
+    printf("multiplyMatrixOnHost elapsed %f ms\n", duration_ms.count());
 
     // malloc device global memory
     int *d_MatA, *d_MatB, *d_MatC;
