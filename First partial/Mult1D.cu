@@ -35,7 +35,7 @@ void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
                      const int ny)
 {
       for(int i = 0; i < nx; i++){
-        for(int j = 0; j < nx; j++){
+        for(int j = 0; j < nx ; j++){
           for(int k = 0; k < nx; k++){
             C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
           }
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
-    printArray(h_A, nx);
+    // printArray(h_A, nx);
 
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
@@ -172,6 +172,7 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
     // check device results
+    printArray(hostRef);
     checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
