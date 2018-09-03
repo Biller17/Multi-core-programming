@@ -105,7 +105,7 @@ __global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, 
         for (int iy = 0; iy < ny; iy++)
         {
             int idx = iy * nx + ix;
-            printf("%d", idx);
+            // printf("%d", idx);
             MatC[idx] = MatA[idx] + MatB[idx];
         }
 }
