@@ -76,9 +76,7 @@ __global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, i
     //ix X ix matrix
     //nx  = width
     //ny height
-    // printf("%d\n", nx);
-    if (ix < nx-1){
-        // printf("%d\n", ix);
+    if (ix < nx){
         for(int j = 0; j < nx; j++){
           for(int k = 0; k < nx; k++){
             // printf("%d\n",(j*nx+ix) );
@@ -86,14 +84,6 @@ __global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, i
           }
         }
     }
-      // if(ix < nx)
-      //   for (int iy = 0; iy < ny; iy++)
-      //   {
-      //       int idx = iy * nx + ix;
-      //       printf("%d\n",idx );
-      //       // printf("%d", idx);
-      //       MatC[idx] = MatA[idx] + MatB[idx];
-      //   }
 }
 
 
@@ -180,9 +170,9 @@ int main(int argc, char **argv)
 
     // check device results
     printArray(hostRef, nx);
-    printf("\n");
+    printf("Host\n");
     printArray(gpuRef, nx);
-    printf("\n");
+    printf("GPU\n");
     checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
