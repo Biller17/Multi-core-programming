@@ -109,8 +109,8 @@ int main(int argc, char **argv)
     // set up data size of matrix
     // int nx = 1 << 12;
     // int ny = 1 << 12;
-    int nx = 2000;
-    int ny = 2000;
+    int nx = 4000;
+    int ny = 4000;
 
     int nxy = nx * ny;
     int nBytes = nxy * sizeof(int);
