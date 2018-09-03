@@ -21,7 +21,7 @@ void initialData(float *ip, const int size)
 void printArray(float * arr, int size)
 {
   int ar = size * size;
-  printf("aiura: %d", arr[1]);
+  printf("aiura: %d", arr[2], "\n");
   for(int x = 0; x < ar; x++){
     printf("%ld ", arr[x]);
     if(x%size){
