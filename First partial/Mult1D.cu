@@ -90,7 +90,6 @@ __global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, 
     //     }
     //     MatC[ix]
     // }
-      printf("%d", nx);
       if(ix < nx)
         for (int iy = 0; iy < ny; iy++)
         {
