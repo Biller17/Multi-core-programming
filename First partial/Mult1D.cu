@@ -24,7 +24,7 @@ void printArray(float * arr, int size)
     for(int y = 0; y < size; y++){
       printf("%ld", arr[x]);
     }
-    print("\n");
+    printf("\n");
   }
 }
 
