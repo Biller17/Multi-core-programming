@@ -109,8 +109,8 @@ int main(int argc, char **argv)
     // set up data size of matrix
     // int nx = 1 << 12;
     // int ny = 1 << 12;
-    int nx = 6;
-    int ny = 6;
+    int nx = 1000;
+    int ny = 1000;
 
     int nxy = nx * ny;
     int nBytes = nxy * sizeof(int);
@@ -127,17 +127,17 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
-    printArray(h_A, nx);
-    printf("\n");
-    printArray(h_B, nx);
-    printf("\n");
+    // printArray(h_A, nx);
+    // printf("\n");
+    // printArray(h_B, nx);
+    // printf("\n");
 
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
 
     // add matrix at host side for result SAFE_CALLs
     auto start_cpu =  chrono::high_resolution_clock::now();
-    multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
+    // multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
@@ -177,12 +177,12 @@ int main(int argc, char **argv)
     // copy kernel result back to host side
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
-    printArray(hostRef, nx);
-    printf("Host\n");
-    printArray(gpuRef, nx);
-    printf("GPU\n");
-    // check device results
-    checkResult(hostRef, gpuRef, nxy);
+    // printArray(hostRef, nx);
+    // printf("Host\n");
+    // printArray(gpuRef, nx);
+    // printf("GPU\n");
+    // // check device results
+    // checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
     SAFE_CALL(cudaFree(d_MatA), "Error freeing memory");
