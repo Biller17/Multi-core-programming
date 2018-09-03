@@ -127,6 +127,10 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
+    printArray(h_A, nx);
+    printf("\n");
+    printArray(h_B, nx);
+    printf("\n");
     // printArray(h_A, nx);
 
     memset(hostRef, 0, nBytes);
@@ -174,6 +178,9 @@ int main(int argc, char **argv)
 
     // check device results
     printArray(hostRef, nx);
+    printf("\n");
+    printArray(gpuRef, nx);
+    printf("\n");
     checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
