@@ -24,7 +24,7 @@ void printArray(int * arr, int size)
   int row = 1:
   for(int x = 0; x < totalSize; x++){
     printf("%d ", arr[x]);
-    if(size * row == x){
+    if(size * row == x-1){
       row++;
       printf("\n");
     }
