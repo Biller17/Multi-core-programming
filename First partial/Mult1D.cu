@@ -22,7 +22,7 @@ void printArray(float * arr, int size)
 {
   int totalSize = size * size;
   for(int x = 0; x < totalSize; x++){
-    printf("%f ", arr[x]);
+    printf("%d ", arr[x]);
     if(x == size){
       printf("\n");
     }
