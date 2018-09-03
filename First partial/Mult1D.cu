@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 
     // add matrix at host side for result SAFE_CALLs
     auto start_cpu =  chrono::high_resolution_clock::now();
-    multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
+    // multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
@@ -175,11 +175,11 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
     // check device results
-    printArray(hostRef, nx);
-    printf("Host\n");
-    printArray(gpuRef, nx);
-    printf("GPU\n");
-    checkResult(hostRef, gpuRef, nxy);
+    // printArray(hostRef, nx);
+    // printf("Host\n");
+    // printArray(gpuRef, nx);
+    // printf("GPU\n");
+    // checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
     SAFE_CALL(cudaFree(d_MatA), "Error freeing memory");
