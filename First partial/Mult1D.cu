@@ -20,13 +20,10 @@ void initialData(float *ip, const int size)
 
 void printArray(float * arr, int size)
 {
-  printf("size: %d", size);
   for(int x = 0; x < size; x++){
-    printf("x: %d", x);
-    if(x%size==0){
-      printf("\n");
+    for(int y = 0; y < size; y++){
+      printf("%ld", arr[x][y]);
     }
-    printf("%ld ", arr[x]);
   }
 }
 
