@@ -24,8 +24,8 @@ void printArray(float * arr, int size)
   printf("aiura: %d", arr[1]);
   for(int x = 0; x < ar; x++){
     printf("%ld ", arr[x]);
-    if(x == size){
-        // printf("\n");
+    if(x%size){
+        printf("\n");
     }
   }
 }
