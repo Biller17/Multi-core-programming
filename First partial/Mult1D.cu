@@ -23,7 +23,7 @@ void printArray(int * arr, int size)
   int totalSize = size * size;
   for(int x = 0; x < totalSize; x++){
     printf("%d ", arr[x]);
-    if(x == size){
+    if(x % size == 0){
       printf("\n");
     }
   }
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnHost elapsed %d ms\n", duration_ms.count());
+    printf("sumMatrixOnHost elapsed %f ms\n", duration_ms.count());
 
     // malloc device global memory
     int *d_MatA, *d_MatB, *d_MatC;
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 
     duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %d ms\n", grid.x,
+    printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
            grid.y,
            block.x, block.y, duration_ms.count());
 
