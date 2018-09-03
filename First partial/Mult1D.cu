@@ -76,7 +76,7 @@ __global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, i
     //ix X ix matrix
     //nx  = width
     //ny height
-    printf("%d\n", nx);
+    // printf("%d\n", nx);
     if (ix < nx){
         for(int j = 0; j < nx; j++){
           for(int k = 0; k < nx; k++){
