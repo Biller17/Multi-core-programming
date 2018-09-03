@@ -76,10 +76,11 @@ __global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, i
     //ix X ix matrix
     //nx  = width
     //ny height
+    printf("%d\n", ix);
     if (ix < nx){
-        for(int j = 0; j < ny; j++){
+        for(int j = 0; j < nx; j++){
           for(int k = 0; k < nx; k++){
-            MatC[ix * nx + j] += MatA[ix * nx + k] * MatB[k * nx + j];
+            MatC[j * nx + ix] += MatA[j * nx + k] * MatB[k * nx + ix];
           }
         }
     }
