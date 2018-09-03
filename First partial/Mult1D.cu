@@ -20,9 +20,9 @@ void initialData(float *ip, const int size)
 
 void printArray(float * arr, int size)
 {
-  printf("size: %d\n", size);
+  size*= size;
   for(int x = 0; x < size; x++){
-    printf(" %ld ", arr[x,0]);
+    printf("%ld ", arr[x]);
     printf("\n");
   }
 }
