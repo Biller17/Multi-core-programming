@@ -62,14 +62,9 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
         printf("Arrays do not match.\n\n");
 }
 
-// grid 2D block 1D
-//bloques en 2 dimensiones, hilos en 1 dimensiones
-//asi se podra mappear la informacion a un kernel
-//tener el problema mappeado directamente en el kernel
 
-//************blockDim es el numero de hilos por bloque, eso se configura desde el inicio
 
-__global__ void sumMatrixOnGPU2d1d(float *MatA, float *MatB, float *MatC, int nx,
+__global__ void multiplyMatrixOnGPU2D1D(float *MatA, float *MatB, float *MatC, int nx,
                                   int ny)
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
@@ -81,6 +76,14 @@ __global__ void sumMatrixOnGPU2d1d(float *MatA, float *MatB, float *MatC, int nx
 
     if (ix < nx && iy < ny)
         MatC[idx] = MatA[idx] + MatB[idx];
+
+
+    if (ix < nx && iy < ny){
+        for(int k = 0; k < nx; k++){
+          // printf("%d\n",(j*nx+ix) );
+          MatC[ix * nx + iy] += MatA[ix * nx + k] * MatB[k * nx + iy];
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -95,9 +98,10 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaSetDevice(dev), "Error setting device");
 
     // set up data size of matrix
-    int nx = 1 << 12;
-    int ny = 1 << 12;
-
+    // int nx = 1 << 12;
+    // int ny = 1 << 12;
+    int nx = 4;
+    int ny = 4;
     int nxy = nx * ny;
     int nBytes = nxy * sizeof(float);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
@@ -113,6 +117,10 @@ int main(int argc, char **argv)
 
     initialData(h_A, nxy);
     initialData(h_B, nxy);
+    printArray(h_A, nx);
+    printf("\n");
+    printArray(h_B, nx);
+    printf("\n");
 
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
@@ -134,6 +142,7 @@ int main(int argc, char **argv)
     // transfer data from host to device
     SAFE_CALL(cudaMemcpy(d_MatA, h_A, nBytes, cudaMemcpyHostToDevice), "Error copying d_MatA");
     SAFE_CALL(cudaMemcpy(d_MatB, h_B, nBytes, cudaMemcpyHostToDevice), "Error copying d_MatB");
+    SAFE_CALL(cudaMemset(d_MatC, 0, nBytes), "Error setting d_MatC to zeros");
 
     // invoke kernel at host side
     int dimx = 128;
@@ -142,7 +151,7 @@ int main(int argc, char **argv)
     dim3 grid((nx + block.x - 1) / block.x, ny);
 
     start_cpu =  chrono::high_resolution_clock::now();
-    sumMatrixOnGPU2d1d<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
+    multiplyMatrixOnGPU2D1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
     end_cpu =  chrono::high_resolution_clock::now();
 
@@ -158,6 +167,11 @@ int main(int argc, char **argv)
     // copy kernel result back to host side
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
+
+    printArray(hostRef, nx);
+    printf("Host\n");
+    printArray(gpuRef, nx);
+    printf("GPU\n");
     // check device results
     checkResult(hostRef, gpuRef, nxy);
 
