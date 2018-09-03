@@ -20,6 +20,7 @@ void initialData(float *ip, const int size)
 
 void printArray(float * arr, int size)
 {
+  printf("size: %d", size);
   for(int x = 0; x < size; x++){
     printf("x: %d", x);
     if(x%size==0){
