@@ -18,6 +18,7 @@ void initialData(float *ip, const int size)
     return;
 }
 
+
 void sumMatrixOnHost(float *A, float *B, float *C, const int nx,
                      const int ny)
 {
@@ -36,6 +37,18 @@ void sumMatrixOnHost(float *A, float *B, float *C, const int nx,
         ib += nx;
         ic += nx;
     }
+
+
+    //   int * multiplication  = new int[size];
+    //   for(int i = 0; i < size; i++){
+    //     multiplication[i] = new int[size];
+    //     for(int j = 0; j < size; j++){
+    //       for(int k = 0; k < size; k++){
+    //         multiplication[i][j] += matrixA[i][k] * matrixB[k][j];
+    //       }
+    //     }
+    //   }
+    //   return multiplication;
 
     return;
 }
@@ -63,18 +76,23 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
 }
 
 // grid 1D block 1D
-__global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx,
-                                 int ny)
+__global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, int ny)
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
 
     if (ix < nx )
+        // for(int j = 0; j < size; j++){
+        //   for(int k = 0; k < size; k++){
+        //     MatC[j] += MatA[threadID][k] * MatB[k][j];
+        //   }
+        // }
         for (int iy = 0; iy < ny; iy++)
         {
             int idx = iy * nx + ix;
             MatC[idx] = MatA[idx] + MatB[idx];
         }
 }
+
 
 int main(int argc, char **argv)
 {
@@ -92,6 +110,7 @@ int main(int argc, char **argv)
     int ny = 1 << 12;
 
     int nxy = nx * ny;
+    printf("NXY+************%d", nxy);
     int nBytes = nxy * sizeof(float);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
 
