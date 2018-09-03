@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 void initialData(int *ip, const int size)
 {
     int i;
@@ -172,7 +173,7 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
     // check device results
-    printArray(hostRef);
+    printArray(hostRef, nx);
     checkResult(hostRef, gpuRef, nxy);
 
     // free device global memory
