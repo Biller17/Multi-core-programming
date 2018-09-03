@@ -69,18 +69,17 @@ void checkResult(int *hostRef, int *gpuRef, const int N)
 }
 
 // grid 1D block 1D
-__global__ void sumMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny)
+__global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, int ny)
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
     //idx full size
     //ix X ix matrix
     //nx  = width
     //ny height
-    int fullSize = nx * ny;
     if (ix < nx){
         for(int j = 0; j < ny; j++){
           for(int k = 0; k < nx; k++){
-            MatC[j * nx + ix] += MatA[j * nx + k] * MatB[k * nx + ix];
+            MatC[ix * nx + j] += MatA[ix * nx + k] * MatB[k * nx + j];
           }
         }
     }
@@ -160,13 +159,13 @@ int main(int argc, char **argv)
     dim3 grid((nx + block.x - 1) / block.x, 1);
 
     start_cpu =  chrono::high_resolution_clock::now();
-    sumMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
+    multiplyMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
     end_cpu =  chrono::high_resolution_clock::now();
 
     duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
+    printf("multiplyMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
            grid.y,
            block.x, block.y, duration_ms.count());
 
