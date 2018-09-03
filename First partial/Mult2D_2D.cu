@@ -58,7 +58,7 @@ void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
 }
 
 
-void checkResult(float *hostRef, float *gpuRef, const int N)
+void checkResult(int *hostRef, int *gpuRef, const int N)
 {
     double epsilon = 1.0E-8;
     bool match = 1;
@@ -80,7 +80,7 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
 }
 
 // grid 2D block 2D
-__global__ void multMatrixOnGPU2D(float *MatA, float *MatB, float *MatC, int nx,
+__global__ void multMatrixOnGPU2D(int *MatA, int *MatB, int *MatC, int nx,
     int ny)
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
@@ -111,15 +111,15 @@ int main(int argc, char **argv)
     int ny = 1 << 12;
 
     int nxy = nx * ny;
-    int nBytes = nxy * sizeof(float);
+    int nBytes = nxy * sizeof(int);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
 
     // malloc host memory
-    float *h_A, *h_B, *hostRef, *gpuRef;
-    h_A = (float *)malloc(nBytes);
-    h_B = (float *)malloc(nBytes);
-    hostRef = (float *)malloc(nBytes);
-    gpuRef = (float *)malloc(nBytes);
+    int *h_A, *h_B, *hostRef, *gpuRef;
+    h_A = (int *)malloc(nBytes);
+    h_B = (int *)malloc(nBytes);
+    hostRef = (int *)malloc(nBytes);
+    gpuRef = (int *)malloc(nBytes);
 
     // initialize data at host side
 
@@ -135,14 +135,14 @@ int main(int argc, char **argv)
 
     // add matrix at host side for result SAFE_CALLs
     auto start_cpu =  chrono::high_resolution_clock::now();
-    sumMatrixOnHost(h_A, h_B, hostRef, nx, ny);
+    multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnHost elapsed %f ms\n", duration_ms.count());
+    printf("multiplyMatrixOnHost elapsed %f ms\n", duration_ms.count());
 
     // malloc device global memory
-    float *d_MatA, *d_MatB, *d_MatC;
+    int *d_MatA, *d_MatB, *d_MatC;
     SAFE_CALL(cudaMalloc((void **)&d_MatA, nBytes), "Error allocating d_MatA");
     SAFE_CALL(cudaMalloc((void **)&d_MatB, nBytes), "Error allocating d_MatB");
     SAFE_CALL(cudaMalloc((void **)&d_MatC, nBytes), "Error allocating d_MatC");
