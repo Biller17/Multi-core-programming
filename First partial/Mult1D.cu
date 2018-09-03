@@ -20,14 +20,14 @@ void initialData(float *ip, const int size)
 
 void printArray(float * arr, int size)
 {
-  printf("%d \n", arr[0])
-  printf("%d ", arr[2])
-  printf("%d ", arr[3])
-  printf("%d ", arr[4])
-  printf("%d ", arr[5])
-  printf("%d ", arr[6])
-  printf("%d \n", arr[7])
-  printf("%d ", arr[8])
+  printf("%d \n", arr[0]);
+  printf("%d ", arr[2]);
+  printf("%d ", arr[3]);
+  printf("%d ", arr[4]);
+  printf("%d ", arr[5]);
+  printf("%d ", arr[6]);
+  printf("%d \n", arr[7]);
+  printf("%d ", arr[8]);
   // int ar = size * size;
   // for(int x = 0; x < ar; x++){
   //   printf("%ld ", arr[x]);
@@ -67,14 +67,14 @@ void sumMatrixOnHost(float *A, float *B, float *C, const int nx,
     //     }
     //   }
     //   return multiplication;
-    for (int j = 0; j < N; j++) {
-      for (int k = 0; k < N; k++) {
-        for (int i = 0; i < N; i++{
-          //Operacion para hacer la regla del karatzo fila por culumna
-          C[j * N + k]= A[i + j * N] * B[i * N + K];
-        }
-      }
-    }
+    // for (int j = 0; j < N; j++) {
+    //   for (int k = 0; k < N; k++) {
+    //     for (int i = 0; i < N; i++{
+    //       //Operacion para hacer la regla del karatzo fila por culumna
+    //       C[j * N + k]= A[i + j * N] * B[i * N + K];
+    //     }
+    //   }
+    // }
 
     return;
 }
