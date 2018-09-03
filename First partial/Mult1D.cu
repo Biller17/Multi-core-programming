@@ -74,7 +74,7 @@ void checkResult(int *hostRef, int *gpuRef, const int N)
         if (abs(hostRef[i] - gpuRef[i]) > epsilon)
         {
             match = 0;
-            printf("host %f gpu %f\n", hostRef[i], gpuRef[i]);
+            printf("host %d gpu %d\n", hostRef[i], gpuRef[i]);
             break;
         }
     }
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     auto end_cpu =  chrono::high_resolution_clock::now();
     chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnHost elapsed %f ms\n", duration_ms.count());
+    printf("sumMatrixOnHost elapsed %d ms\n", duration_ms.count());
 
     // malloc device global memory
     int *d_MatA, *d_MatB, *d_MatC;
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 
     duration_ms = end_cpu - start_cpu;
 
-    printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
+    printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %d ms\n", grid.x,
            grid.y,
            block.x, block.y, duration_ms.count());
 
