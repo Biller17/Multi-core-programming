@@ -34,9 +34,9 @@ void printArray(int * arr, int size)
 void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
                      const int ny)
 {
-      for(int i = 0; i < size; i++){
-        for(int j = 0; j < size; j++){
-          for(int k = 0; k < size; k++){
+      for(int i = 0; i < nx; i++){
+        for(int j = 0; j < nx; j++){
+          for(int k = 0; k < nx; k++){
             C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
           }
         }
