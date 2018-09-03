@@ -89,8 +89,6 @@ __global__ void multiplyMatrixOnGPU2D1D(int *MatA, int *MatB, int *MatC, int nx,
     unsigned int idx = iy * nx + ix;
     //con este indice ya se puede acceder al elemento de ese arreglo
 
-    if (ix < nx && iy < ny)
-        MatC[idx] = MatA[idx] + MatB[idx];
 
 
     if (ix < nx && iy < ny){
@@ -100,6 +98,10 @@ __global__ void multiplyMatrixOnGPU2D1D(int *MatA, int *MatB, int *MatC, int nx,
         }
     }
 }
+
+
+
+
 
 int main(int argc, char **argv)
 {
