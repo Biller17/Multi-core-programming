@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     // transfer data from host to device
     SAFE_CALL(cudaMemcpy(d_MatA, h_A, nBytes, cudaMemcpyHostToDevice), "Error copying d_MatA");
     SAFE_CALL(cudaMemcpy(d_MatB, h_B, nBytes, cudaMemcpyHostToDevice), "Error copying d_MatB");
-    cudaMemset((void **)&d_MatC, 0, bytes); 
+    cudaMemset((void **)&d_MatC, 0, nBytes); 
     // invoke kernel at host side
     int dimx = 256;
     dim3 block(dimx, 1);
