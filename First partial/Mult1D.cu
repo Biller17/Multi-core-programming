@@ -77,6 +77,7 @@ __global__ void multiplyMatrixOnGPU1D(int *MatA, int *MatB, int *MatC, int nx, i
     //nx  = width
     //ny height
     if (ix < nx){
+        printf("%d\n",ix );
         for(int j = 0; j < nx; j++){
           for(int k = 0; k < nx; k++){
             // printf("%d\n",(j*nx+ix) );
@@ -148,10 +149,7 @@ int main(int argc, char **argv)
     dim3 block(dimx, 1);
     dim3 grid((nx + block.x - 1) / block.x, 1);
     start_cpu =  chrono::high_resolution_clock::now();
-    printf("antes\n" );
     multiplyMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
-    printf("despues\n" );
-    printArray(d_MatC, nx);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
     end_cpu =  chrono::high_resolution_clock::now();
 
