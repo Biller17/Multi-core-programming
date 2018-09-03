@@ -149,7 +149,6 @@ int main(int argc, char **argv)
     dim3 grid((nx + block.x - 1) / block.x, 1);
     start_cpu =  chrono::high_resolution_clock::now();
     printf("antes\n" );
-    printArray(d_MatC, nx);
     multiplyMatrixOnGPU1D<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     printf("despues\n" );
     printArray(d_MatC, nx);
