@@ -80,18 +80,23 @@ __global__ void sumMatrixOnGPU1D(float *MatA, float *MatB, float *MatC, int nx, 
 {
     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
 
-    if (ix < nx )
-        for(int j = 0; j < ny; j++){
-          for(int k = 0; k < nx; k++){
-            int idx = j * nx + k;
-            MatC[j] += MatA[idx][k] * MatB[k][j];
-          }
+    // if (ix < nx ){
+    //     int * mult = new int[ny];
+    //     for(int j = 0; j < ny; j++){
+    //       for(int k = 0; k < nx; k++){
+    //         int idx = j * nx + k;
+    //         mult[j] += MatA[ix][k] * MatB[k][j];
+    //       }
+    //     }
+    //     MatC[ix]
+    // }
+
+      if(ix < nx)
+        for (int iy = 0; iy < ny; iy++)
+        {
+            int idx = iy * nx + ix;
+            MatC[idx] = MatA[idx] + MatB[idx];
         }
-        // for (int iy = 0; iy < ny; iy++)
-        // {
-        //     int idx = iy * nx + ix;
-        //     MatC[idx] = MatA[idx] + MatB[idx];
-        // }
 }
 
 
