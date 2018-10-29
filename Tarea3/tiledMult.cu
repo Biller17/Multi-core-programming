@@ -198,11 +198,11 @@ int main(int argc, char **argv)
     dim3 block(dimx, dimy);
     dim3 grid((nx + block.x - 1) / block.x, (ny + block.y - 1) / block.y);
 
-    auto start_cpu =  chrono::high_resolution_clock::now();
+    start_cpu =  chrono::high_resolution_clock::now();
     tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
-    auto end_cpu =  chrono::high_resolution_clock::now();
-    chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
+    end_cpu =  chrono::high_resolution_clock::now();
+    duration_ms = end_cpu - start_cpu;
     //
     // printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
     //        grid.y,
