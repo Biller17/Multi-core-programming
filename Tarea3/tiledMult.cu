@@ -118,14 +118,14 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
       }
 
-      if((i * DIM + threadIdx.y) < ny && (ix < nx)) {
+      if((i * TILEDIM + threadIdx.y) < ny && (ix < nx)) {
         sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
       }
 
       //syncing threads and getting final value for result matrix
       __syncthreads();
       for(int j = 0; j < TILEDIM; j++) {
-        sum += matTempA[ty][j] * matTempB[j][tx];
+        sum += sharedMatA[ty][j] * sharedMatB[j][tx];
       }
       __syncthreads();
     }
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
     // auto end_cpu =  chrono::high_resolution_clock::now();
     // chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    printf("multiplyMatrixOnHost elapsed %f ms\n", duration_ms.count());
+    // printf("multiplyMatrixOnHost elapsed %f ms\n", duration_ms.count());
 
     // malloc device global memory
     float *d_MatA, *d_MatB, *d_MatC;
