@@ -123,14 +123,9 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
       if((i * TILEDIM + tx) < nx && (iy < ny)) {
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
       }
-      else{
-        sharedMatA[ty][tx] = 0;
-      }
+
       if((i * TILEDIM + ty) < ny && (ix < nx)) {
-        sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
-      }
-      else{
-        sharedMatB[ty][tx] = 0;
+        sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) + (nx * ix)];
       }
 
       //syncing threads and getting final value for result matrix
