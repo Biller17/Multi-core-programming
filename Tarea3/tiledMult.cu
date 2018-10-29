@@ -176,11 +176,11 @@ int main(int argc, char **argv)
     memset(hostRef, 0, nBytes);
     memset(gpuRef, 0, nBytes);
 
-    // add matrix at host side for result SAFE_CALLs
-    // auto start_cpu =  chrono::high_resolution_clock::now();
-    // // multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
-    // auto end_cpu =  chrono::high_resolution_clock::now();
-    // chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
+    //add matrix at host side for result SAFE_CALLs
+    auto start_cpu =  chrono::high_resolution_clock::now();
+    multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
+    auto end_cpu =  chrono::high_resolution_clock::now();
+    chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
     // malloc device global memory
     float *d_MatA, *d_MatB, *d_MatC;
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
     SAFE_CALL(cudaMemcpy(gpuRef, d_MatC, nBytes, cudaMemcpyDeviceToHost), "Error copying d_MatC");
 
 
-    // checkResult(hostRef, gpuRef, nxy);
+    checkResult(hostRef, gpuRef, nxy);
 
 
 
