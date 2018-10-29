@@ -98,8 +98,8 @@ void checkResult(float *hostRef, float *gpuRef, const int N)
 //matrix calculation using tile method
 __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
 {
-    unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
-    unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
+    unsigned int ix = threadIdx.x + blockIdx.x * TILEDIM;
+    unsigned int iy = threadIdx.y + blockIdx.y * TILEDIM;
     // unsigned int idx = iy * nx + ix;
 
     __shared__ float sharedMatA[TILEDIM][TILEDIM];
