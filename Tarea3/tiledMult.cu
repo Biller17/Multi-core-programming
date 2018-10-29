@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define TILEDIM 32
+#define TILEDIM 16
 
 
 //Code used from examples and modified for activity
@@ -58,7 +58,7 @@ void multiplyMatrixOnHost(float *A, float *B, float *C, int nx, int ny)
 //checking result of gpu and comparing them with cpu matrix
 void checkResult(float *hostRef, float *gpuRef, const int N)
 {
-    double epsilon = 1.0E-9;
+    double epsilon = 1.0E-8;
     bool match = 1;
 
     for (int i = 0; i < N; i++)
@@ -110,20 +110,22 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     int tx = threadIdx.x;
     int sum = 0;
 
+
+    for(int i = 0; i < TILEDIM; i ++) {
+      for(int j = 0; j < TILEDIM; j++) {
+        sharedMatA[i][j] = 0;
+        sharedMatA[i][j] = 0;
+      }
+    }
     for(int i = (TILEDIM + nx - 1)/TILEDIM; i >= 0; i--) {
       if((i * TILEDIM + threadIdx.x) < nx && (iy < ny)) {
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
-      }
-      else{
-         sharedMatA[ty][tx] = 0;
       }
 
       if((i * TILEDIM + threadIdx.y) < ny && (ix < nx)) {
         sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
       }
-      else{
-        sharedMatB[ty][tx] = 0;
-      }
+
 
       //syncing threads and getting final value for result matrix
       __syncthreads();
@@ -154,8 +156,8 @@ int main(int argc, char **argv)
     // set up data size of matrix
     // int nx = 1 << 12;
     // int ny = 1 << 12;
-    int nx = 2000;
-    int ny = 2000;
+    int nx = 500;
+    int ny = 500;
 
     int nxy = nx * ny;
     int nBytes = nxy * sizeof(float);
