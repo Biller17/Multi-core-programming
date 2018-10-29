@@ -41,23 +41,22 @@ void printArray(int * arr, int size)
 }
 
 
-// //multiplication of matrices using cpu
-// void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
-//                      const int ny)
-// {
-//       for(int i = 0; i < nx; i++){
-//         for(int j = 0; j < nx ; j++){
-//           for(int k = 0; k < nx; k++){
-//             C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
-//           }
-//         }
-//       }
-//
-//     return;
-// }
+//multiplication of matrices using cpu
+void multiplyMatrixOnHost(float *A, float *B, float *C, const int nx, int ny)
+{
+      for(int i = 0; i < nx; i++){
+        for(int j = 0; j < nx ; j++){
+          for(int k = 0; k < nx; k++){
+            C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
+          }
+        }
+      }
+
+    return;
+}
 
 //checking result of gpu and comparing them with cpu matrix
-void checkResult(int *hostRef, int *gpuRef, const int N)
+void checkResult(float *hostRef, float *gpuRef, const int N)
 {
     double epsilon = 1.0E-8;
     bool match = 1;
