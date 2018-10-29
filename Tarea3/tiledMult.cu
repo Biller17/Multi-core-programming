@@ -183,7 +183,7 @@ int main(int argc, char **argv)
     // auto end_cpu =  chrono::high_resolution_clock::now();
     // chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
 
-    // printf("multiplyMatrixOnHost elapsed %f ms\n", duration_ms.count());
+  |
 
     // malloc device global memory
     float *d_MatA, *d_MatB, *d_MatC;
