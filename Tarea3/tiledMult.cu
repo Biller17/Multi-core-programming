@@ -111,6 +111,13 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     float sum = 0;
 
 
+    for(int i = 0; i < TILEDIM; i ++) {
+      for(int j = 0; j < TILEDIM; j++) {
+        sharedMatA[i][j] = 0;
+        sharedMatA[i][j] = 0;
+      }
+    }
+
 
     for(int i = (TILEDIM + nx - 1)/TILEDIM; i >= 0; i--) {
 
