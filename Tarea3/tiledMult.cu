@@ -110,7 +110,6 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     int tx = threadIdx.x;
     int sum = 0;
 
-    //vamos a traves de todos los tiles
     for(int i = (TILEDIM + nx - 1)/TILEDIM; i >= 0; i--) {
       if((i * TILEDIM + threadIdx.x) < nx && (iy < ny)) {
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
