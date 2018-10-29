@@ -18,7 +18,6 @@ using namespace std;
 void initialData(int *ip, const int size)
 {
     int i;
-
     for(i = 0; i < size; i++)
     {
         ip[i] = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/10));
@@ -159,11 +158,11 @@ int main(int argc, char **argv)
     printf("Matrix size: nx %d ny %d\n", nx, ny);
 
     // malloc host memory
-    int *h_A, *h_B, *hostRef, *gpuRef;
-    h_A = (int *)malloc(nBytes);
-    h_B = (int *)malloc(nBytes);
-    hostRef = (int *)malloc(nBytes);
-    gpuRef = (int *)malloc(nBytes);
+    float *h_A, *h_B, *hostRef, *gpuRef;
+    h_A = (float *)malloc(nBytes);
+    h_B = (float *)malloc(nBytes);
+    hostRef = (float *)malloc(nBytes);
+    gpuRef = (float *)malloc(nBytes);
 
     // initialize data at host side
 
@@ -182,8 +181,6 @@ int main(int argc, char **argv)
     // // multiplyMatrixOnHost(h_A, h_B, hostRef, nx, ny);
     // auto end_cpu =  chrono::high_resolution_clock::now();
     // chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
-
-  |
 
     // malloc device global memory
     float *d_MatA, *d_MatB, *d_MatC;
