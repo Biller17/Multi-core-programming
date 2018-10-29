@@ -42,7 +42,7 @@ void printArray(int * arr, int size)
 
 
 //multiplication of matrices using cpu
-void multiplyMatrixOnHost(float *A, float *B, float *C, const int nx, int ny)
+void multiplyMatrixOnHost(float *A, float *B, float *C, int nx, int ny)
 {
       for(int i = 0; i < nx; i++){
         for(int j = 0; j < nx ; j++){
@@ -58,7 +58,7 @@ void multiplyMatrixOnHost(float *A, float *B, float *C, const int nx, int ny)
 //checking result of gpu and comparing them with cpu matrix
 void checkResult(float *hostRef, float *gpuRef, const int N)
 {
-    double epsilon = 1.0E-8;
+    double epsilon = 1.0E-9;
     bool match = 1;
 
     for (int i = 0; i < N; i++)
@@ -114,9 +114,15 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
       if((i * TILEDIM + threadIdx.x) < nx && (iy < ny)) {
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
       }
+      else{
+         sharedMatA[ty][tx] = 0;
+      }
 
       if((i * TILEDIM + threadIdx.y) < ny && (ix < nx)) {
         sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
+      }
+      else{
+        sharedMatB[ty][tx] = 0;
       }
 
       //syncing threads and getting final value for result matrix
