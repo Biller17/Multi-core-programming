@@ -20,7 +20,7 @@ void initialData(float *ip, const int size)
     int i;
     for(i = 0; i < size; i++)
     {
-        ip[i] = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/10));
+        ip[i] = 2;
     }
 
     return;
@@ -127,7 +127,7 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
       if((i * TILEDIM + ty) < ny && (ix < nx)) {
         sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
       }
-      
+
 
       //syncing threads and getting final value for result matrix
       __syncthreads();
