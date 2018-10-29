@@ -111,18 +111,19 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     float sum = 0;
 
 
-    // for(int i = 0; i < TILEDIM; i ++) {
-    //   for(int j = 0; j < TILEDIM; j++) {
-    //     sharedMatA[i][j] = 0;
-    //     sharedMatA[i][j] = 0;
-    //   }
-    // }
+    for(int i = 0; i < TILEDIM; i ++) {
+      for(int j = 0; j < TILEDIM; j++) {
+        sharedMatA[i][j] = 0;
+        sharedMatA[i][j] = 0;
+      }
+    }
     for(int i = (TILEDIM + nx - 1)/TILEDIM; i >= 0; i--) {
-      if((i * TILEDIM + threadIdx.x) < nx && (iy < ny)) {
+
+      if((i * TILEDIM + tx) < nx && (iy < ny)) {
         sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
       }
 
-      if((i * TILEDIM + threadIdx.y) < ny && (ix < nx)) {
+      if((i * TILEDIM + ty) < ny && (ix < nx)) {
         sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
       }
 
@@ -134,6 +135,7 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
       }
       __syncthreads();
     }
+    
     //writing value in result matrix
     if(ix < nx && iy < ny) {
       MatC[iy*ny+ix] = sum;
