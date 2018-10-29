@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define TILEDIM 16
+#define TILEDIM 32
 
 
 //Code used from examples and modified for activity
@@ -108,7 +108,7 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
 
     int ty = threadIdx.y;
     int tx = threadIdx.x;
-    int sum = 0;
+    float sum = 0;
 
 
     // for(int i = 0; i < TILEDIM; i ++) {
