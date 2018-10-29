@@ -110,15 +110,16 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
 
     int ty = threadIdx.y;
     int tx = threadIdx.x;
+    int sum = 0;
 
     //vamos a traves de todos los tiles
-    for(int i = (TILEDIM + nx - 1)/DIM; i >= 0; i--) {
+    for(int i = (TILEDIM + nx - 1)/TILEDIM; i >= 0; i--) {
       if((i * TILEDIM + threadIdx.x) < nx && (iy < ny)) {
-        sharedMatA[ty][tx] = A[(iy*ny) + (i*TILEDIM+tx)];
+        sharedMatA[ty][tx] = MatA[(iy*ny) + (i*TILEDIM+tx)];
       }
 
       if((i * DIM + threadIdx.y) < ny && (ix < nx)) {
-        sharedMatB[ty][tx] = B[(i*TILEDIM+ty) * nx + ix];
+        sharedMatB[ty][tx] = MatB[(i*TILEDIM+ty) * nx + ix];
       }
 
       //syncing threads and getting final value for result matrix
@@ -130,7 +131,7 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     }
     //writing value in result matrix
     if(ix < nx && iy < ny) {
-      C[iy*ny+ix] = sum;
+      MatC[iy*ny+ix] = sum;
     }
 }
 
@@ -201,12 +202,11 @@ int main(int argc, char **argv)
     dim3 block(dimx, dimy);
     dim3 grid((nx + block.x - 1) / block.x, (ny + block.y - 1) / block.y);
 
-    start_cpu =  chrono::high_resolution_clock::now();
+    auto start_cpu =  chrono::high_resolution_clock::now();
     tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
     SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
-    end_cpu =  chrono::high_resolution_clock::now();
-
-    duration_ms = end_cpu - start_cpu;
+    auto end_cpu =  chrono::high_resolution_clock::now();
+    chrono::duration<float, std::milli> duration_ms = end_cpu - start_cpu;
     //
     // printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
     //        grid.y,
