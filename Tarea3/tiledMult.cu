@@ -41,20 +41,20 @@ void printArray(int * arr, int size)
 }
 
 
-//multiplication of matrices using cpu
-void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
-                     const int ny)
-{
-      for(int i = 0; i < nx; i++){
-        for(int j = 0; j < nx ; j++){
-          for(int k = 0; k < nx; k++){
-            C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
-          }
-        }
-      }
-
-    return;
-}
+// //multiplication of matrices using cpu
+// void multiplyMatrixOnHost(int *A, int *B, int *C, const int nx,
+//                      const int ny)
+// {
+//       for(int i = 0; i < nx; i++){
+//         for(int j = 0; j < nx ; j++){
+//           for(int k = 0; k < nx; k++){
+//             C[i*nx+j] += A[i*nx+k] * B[k*nx+j];
+//           }
+//         }
+//       }
+//
+//     return;
+// }
 
 //checking result of gpu and comparing them with cpu matrix
 void checkResult(int *hostRef, int *gpuRef, const int N)
@@ -81,20 +81,20 @@ void checkResult(int *hostRef, int *gpuRef, const int N)
 
 
 
-//matrix calculation using cpu
-__global__ void multMatrixOnGPU2D(float *MatA, float *MatB, float *MatC, int nx, int ny)
-{
-    unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
-    unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
-    unsigned int idx = iy * nx + ix;
-
-
-    if (ix < nx && iy < ny){
-        for(int k = 0; k < nx; k++){
-          MatC[ix * nx + iy] += MatA[ix * nx + k] * MatB[k * nx + iy];
-        }
-    }
-}
+// //matrix calculation using cpu
+// __global__ void multMatrixOnGPU2D(float *MatA, float *MatB, float *MatC, int nx, int ny)
+// {
+//     unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
+//     unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
+//     unsigned int idx = iy * nx + ix;
+//
+// 
+//     if (ix < nx && iy < ny){
+//         for(int k = 0; k < nx; k++){
+//           MatC[ix * nx + iy] += MatA[ix * nx + k] * MatB[k * nx + iy];
+//         }
+//     }
+// }
 
 //matrix calculation using tile method
 __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
     int ny = 2000;
 
     int nxy = nx * ny;
-    int nBytes = nxy * sizeof(int);
+    int nBytes = nxy * sizeof(float);
     printf("Matrix size: nx %d ny %d\n", nx, ny);
 
     // malloc host memory
