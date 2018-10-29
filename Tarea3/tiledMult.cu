@@ -108,8 +108,8 @@ __global__ void tiledMult(float *MatA, float *MatB, float *MatC, int nx, int ny)
     __shared__ float sharedMatB[TILEDIM][TILEDIM];
 
 
-    int ty = threadIdx.y
-    int tx = threadIdx.x
+    int ty = threadIdx.y;
+    int tx = threadIdx.x;
 
     //vamos a traves de todos los tiles
     for(int i = (TILEDIM + nx - 1)/DIM; i >= 0; i--) {
@@ -201,12 +201,12 @@ int main(int argc, char **argv)
     dim3 block(dimx, dimy);
     dim3 grid((nx + block.x - 1) / block.x, (ny + block.y - 1) / block.y);
 
-    // start_cpu =  chrono::high_resolution_clock::now();
-    // tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
-    // SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
-    // end_cpu =  chrono::high_resolution_clock::now();
-    //
-    // duration_ms = end_cpu - start_cpu;
+    start_cpu =  chrono::high_resolution_clock::now();
+    tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
+    SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
+    end_cpu =  chrono::high_resolution_clock::now();
+
+    duration_ms = end_cpu - start_cpu;
     //
     // printf("sumMatrixOnGPU1D <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x,
     //        grid.y,
@@ -226,13 +226,13 @@ int main(int argc, char **argv)
     // checkResult(hostRef, gpuRef, nxy);
 
 
-    //calculating matrix multiplication using Tiling
-    start_cpu =  chrono::high_resolution_clock::now();
-    tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
-    SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
-    end_cpu =  chrono::high_resolution_clock::now();
-
-    duration_ms = end_cpu - start_cpu;
+    // //calculating matrix multiplication using Tiling
+    // start_cpu =  chrono::high_resolution_clock::now();
+    // tiledMult<<<grid, block>>>(d_MatA, d_MatB, d_MatC, nx, ny);
+    // SAFE_CALL(cudaDeviceSynchronize(), "Error executing kernel");
+    // end_cpu =  chrono::high_resolution_clock::now();
+    //
+    // duration_ms = end_cpu - start_cpu;
 
     printf("Matrix multiplication with tiling <<<(%d,%d), (%d,%d)>>> elapsed %f ms\n", grid.x, grid.y, block.x, block.y, duration_ms.count());
 
