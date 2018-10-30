@@ -39,11 +39,11 @@ __global__ void normalize_histogram(char *input, int *histogram, int *normalized
 	unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
 	unsigned int idx = iy * nx + ix;
 	int accumulated = 0;
-	__syncthreads();
-	for(int x = 0; x <= idx;  x ++){
+	// __syncthreads();
+	for(int x = 0; x < 255;  x ++){
 		accumulated += histogram[x];
 	}
-	__syncthreads();
+	// __syncthreads();
 
 	if(idx < 255){
 		normalized_histogram[idx] = accumulated * 255 / (nx*ny);
