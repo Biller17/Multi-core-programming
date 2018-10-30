@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 	int nx = grayscale_input.cols;
 	int ny = grayscale_input.rows;
 	int nxy = nx * ny;
-	int nBytes = nxy * sizeof(float);
+	int nBytes = nxy * sizeof(char);
 	char *d_input, *d_output;
 	int *d_histogram, *d_normalized_histogram;
 	int rBytes  = 256 * sizeof(int);
