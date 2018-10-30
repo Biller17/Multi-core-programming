@@ -34,14 +34,16 @@ __global__ void create_image_histogram(char *input, int* histogram, int nx, int 
 }
 
 
-__global__ void normalize_histogram(char *input,int *histogram, int *normalized_histogram, int nx, int ny){
+__global__ void normalize_histogram(char *input, int *histogram, int *normalized_histogram, int nx, int ny){
 	unsigned int ix = threadIdx.x + blockIdx.x * blockDim.x;
 	unsigned int iy = threadIdx.y + blockIdx.y * blockDim.y;
 	unsigned int idx = iy * nx + ix;
 	int accumulated = 0;
+	__syncthreads();
 	for(int x = 0; x <= idx;  x ++){
 		accumulated += histogram[x];
 	}
+	__syncthreads();
 
 	if(idx < 255){
 		normalized_histogram[idx] = accumulated * 255 / (nx*ny);
